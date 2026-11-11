@@ -77,6 +77,8 @@ enum ConfigCommand {
 
 /// Runs the command line and returns the process exit status.
 pub fn main() -> ExitCode {
+    crate::tls::install_crypto_provider();
+
     let cli = Cli::parse();
 
     match run(cli) {
