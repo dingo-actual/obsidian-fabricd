@@ -1,0 +1,7 @@
+/target
+agent_resources/
+agent_state/
+.pi/
+resources/
+AGENTS.md
+
