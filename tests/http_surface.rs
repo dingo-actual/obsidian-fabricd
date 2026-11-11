@@ -52,10 +52,9 @@ async fn start(fabric_key: bool) -> Running {
         &secrets(fabric_key),
         ServerInstanceId::from_uuid(Uuid::new_v4()),
     );
-    let app = server::router(state);
 
     tokio::spawn(async move {
-        let _ = server::serve(listener, app).await;
+        let _ = server::serve(listener, state).await;
     });
 
     Running {
@@ -332,9 +331,18 @@ async fn the_bearer_token_is_never_echoed() {
 async fn an_unrouted_path_is_not_served_as_health() {
     let running = start(true).await;
 
-    let response = running.get("/v1/sessions").await;
+    let response = running.get("/v1/unknown").await;
 
     assert_eq!(response.status(), 404);
+}
+
+#[tokio::test]
+async fn a_wrong_method_on_a_known_path_is_rejected() {
+    let running = start(true).await;
+
+    let response = running.get("/v1/sessions").await;
+
+    assert_eq!(response.status(), 405);
 }
 
 /// Sends one HTTP/1.1 request by hand, so the client cannot rewrite the headers.

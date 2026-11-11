@@ -56,6 +56,23 @@ impl ApiError {
         Self::new(StatusCode::BAD_REQUEST, ErrorCode::InvalidFeedback, message)
     }
 
+    /// The session identity is unknown, normally because the process restarted.
+    pub fn session_not_found() -> Self {
+        Self::new(
+            StatusCode::NOT_FOUND,
+            ErrorCode::SessionNotFound,
+            "the session is unknown; create it again",
+        )
+    }
+
+    /// The session identity is already bound to a different vault.
+    ///
+    /// No canonical code covers a rebind, so this service uses `session_conflict`
+    /// with a `409`, matching the generation-conflict shape.
+    pub fn session_conflict(message: impl Into<Cow<'static, str>>) -> Self {
+        Self::new(StatusCode::CONFLICT, ErrorCode::SessionConflict, message)
+    }
+
     /// The body is larger than the configured limit.
     pub fn payload_too_large(limit: u64) -> Self {
         Self::new(
@@ -255,6 +272,16 @@ mod tests {
                 StatusCode::PAYLOAD_TOO_LARGE,
                 ErrorCode::PayloadTooLarge,
             ),
+            (
+                ApiError::session_not_found(),
+                StatusCode::NOT_FOUND,
+                ErrorCode::SessionNotFound,
+            ),
+            (
+                ApiError::session_conflict("already bound"),
+                StatusCode::CONFLICT,
+                ErrorCode::SessionConflict,
+            ),
         ];
 
         for (error, status, code) in cases {
@@ -319,6 +346,8 @@ mod tests {
             ApiError::shutting_down(),
             ApiError::internal(),
             ApiError::invalid_feedback("the result set is unknown or expired"),
+            ApiError::session_not_found(),
+            ApiError::session_conflict("the session is already bound to another vault"),
         ];
 
         for error in errors {

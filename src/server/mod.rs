@@ -1,7 +1,7 @@
 //! The authenticated loopback HTTP surface.
 //!
-//! Scope: one route, `GET /v1/health`, behind the full set of local request
-//! controls. Everything here is about making the door trustworthy:
+//! Two routes, `GET /v1/health` and the session pair, behind the full set of local
+//! request controls. Everything here is about making the door trustworthy:
 //!
 //! - [`guard`] checks the `Host` authority, refuses any browser `Origin`, and
 //!   refuses a non-loopback peer when the address is available.
@@ -16,9 +16,10 @@
 
 use std::net::SocketAddr;
 use std::sync::Arc;
+use std::time::Duration;
 
 use axum::Router;
-use axum::routing::get;
+use axum::routing::{delete, get, post};
 use secrecy::SecretString;
 use tokio::net::TcpListener;
 use tower_http::limit::RequestBodyLimitLayer;
@@ -29,6 +30,8 @@ use crate::protocol::{Limits, ServerInstanceId};
 use crate::server::auth::{AuthState, authenticate};
 use crate::server::guard::{Authority, GuardState, check_request};
 use crate::server::health::{ProviderStatus, health};
+use crate::session::Registry;
+use crate::session::registry::Limits as SessionLimits;
 
 pub mod access;
 pub mod auth;
@@ -36,6 +39,7 @@ pub mod error;
 pub mod guard;
 pub mod health;
 pub mod limits;
+pub mod sessions;
 
 pub use error::ApiError;
 
@@ -55,6 +59,8 @@ pub struct AppState {
     pub auth: Arc<AuthState>,
     /// Accepted authority and origin policy.
     pub guard: Arc<GuardState>,
+    /// Live sessions for this process lifetime.
+    pub sessions: Arc<Registry>,
 }
 
 impl AppState {
@@ -71,6 +77,10 @@ impl AppState {
             limits,
             providers: ProviderStatus::from_config(config, secrets),
             auth: Arc::new(AuthState::new(&secrets.local_token)),
+            sessions: Arc::new(Registry::new(SessionLimits {
+                max_sessions: config.server.max_sessions,
+                idle_timeout: Duration::from_secs(config.server.session_idle_seconds),
+            })),
             guard: Arc::new(GuardState::new(Authority::new(
                 &config.server.bind,
                 config.server.port,
@@ -108,6 +118,8 @@ pub fn router(state: AppState) -> Router {
 
     Router::new()
         .route("/v1/health", get(health))
+        .route("/v1/sessions", post(sessions::create))
+        .route("/v1/sessions/{session_id}", delete(sessions::delete))
         .layer(RequestBodyLimitLayer::new(limit))
         .layer(axum::middleware::from_fn_with_state(
             state.clone(),
@@ -147,12 +159,16 @@ pub async fn bind(config: &Config) -> Result<TcpListener, ServerError> {
         .map_err(|source| ServerError::Bind { address, source })
 }
 
-/// Serves the router until the listener fails.
+/// Serves the router until the listener fails, sweeping expired sessions for as
+/// long as it runs.
 ///
 /// # Errors
 ///
 /// Returns the underlying I/O failure when the listener stops accepting.
-pub async fn serve(listener: TcpListener, app: Router) -> std::io::Result<()> {
+pub async fn serve(listener: TcpListener, state: AppState) -> std::io::Result<()> {
+    let _sweeper = crate::session::spawn_sweeper(state.sessions.clone());
+    let app = router(state);
+
     axum::serve(
         listener,
         app.into_make_service_with_connect_info::<SocketAddr>(),

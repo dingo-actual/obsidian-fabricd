@@ -22,6 +22,8 @@ pub enum ErrorCode {
     ProtocolVersionMismatch,
     /// This generation was already used with different content.
     GenerationConflict,
+    /// A session id is already bound to a different vault.
+    SessionConflict,
     /// A newer generation has been accepted.
     StaleGeneration,
     /// The body exceeds the request limit.
@@ -75,6 +77,7 @@ mod tests {
                 "protocol_version_mismatch",
             ),
             (ErrorCode::GenerationConflict, "generation_conflict"),
+            (ErrorCode::SessionConflict, "session_conflict"),
             (ErrorCode::StaleGeneration, "stale_generation"),
             (ErrorCode::PayloadTooLarge, "payload_too_large"),
             (ErrorCode::CapacityLimited, "capacity_limited"),
