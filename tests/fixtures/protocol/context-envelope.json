@@ -1,0 +1,18 @@
+{
+  "protocol_version": 1,
+  "session_id": "5b6f4992-9158-4b22-aa77-601f771b6907",
+  "vault_id": "b1bda11a-5c6c-43ab-8153-82497d538969",
+  "generation": 12,
+  "document_path": "Projects/Associative Memory/E17.md",
+  "document_title": "E17",
+  "current_text": "The learned keys become nearly collinear during training.",
+  "selected_text": null,
+  "section_title": "Failure analysis",
+  "heading_path": ["Experiment E17", "Failure analysis"],
+  "preceding_text": ["The retrieval loss decreases while pattern separation deteriorates."],
+  "following_text": [],
+  "properties": {},
+  "timestamp_ms": 1791290000000,
+  "trigger": "automatic",
+  "cache_policy": "prefer_cache"
+}

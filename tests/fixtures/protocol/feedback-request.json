@@ -1,0 +1,10 @@
+{
+  "protocol_version": 1,
+  "session_id": "5b6f4992-9158-4b22-aa77-601f771b6907",
+  "vault_id": "b1bda11a-5c6c-43ab-8153-82497d538969",
+  "generation": 12,
+  "result_set_id": "fc41a438-d8b4-46ae-82a5-3fdb56dbbb4f",
+  "resource_id": "fixture-resource-1",
+  "feedback_id": "3d1f2a44-5c6b-4f7e-9a10-2b8c4d6e8f01",
+  "event": "opened"
+}

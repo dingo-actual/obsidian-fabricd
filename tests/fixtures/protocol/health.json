@@ -1,0 +1,11 @@
+{
+  "protocol_version": 1,
+  "supported_protocol_versions": [1],
+  "server_version": "0.1.0",
+  "server_instance_id": "c2a39d48-0691-463f-ac3d-0b492b2514f6",
+  "status": "degraded",
+  "limits": {"request_bytes": 131072, "event_bytes": 262144},
+  "fabric": {"configured": true, "last_status": "unknown"},
+  "contextualizer": {"mode": "disabled", "last_status": "disabled"},
+  "reranker": {"mode": "none", "last_status": "disabled"}
+}

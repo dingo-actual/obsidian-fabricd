@@ -1,0 +1,8 @@
+{
+  "protocol_version": 1,
+  "code": "fabric_unavailable",
+  "stage": "fabric",
+  "message": "Fabric search is temporarily unavailable.",
+  "retryable": true,
+  "retry_after_ms": 30000
+}
