@@ -1,0 +1,25 @@
+version = 1
+
+[server]
+bind = "127.0.0.1"
+port = 47322
+token_env = "OBSIDIAN_FABRICD_TOKEN"
+
+[fabric]
+base_url = "https://api.fabric.so"
+search_path = "/v2/search"
+api_key_env = "FABRIC_API_KEY"
+
+[privacy]
+allowed_hosted_providers = []
+
+[reranker]
+provider = "llama-swap"
+fallback = ["none"]
+request_full_pool = true
+
+[reranker.llama_swap]
+base_url = "http://127.0.0.1:8080"
+endpoint = "/v1/rerank"
+model = "qwen3-reranker-8b"
+api_key_env = "LLAMA_SWAP_API_KEY"

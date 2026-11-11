@@ -8,7 +8,7 @@
 //!
 //! Version 1 has no Fabric write path and no vault mutation.
 //!
-//! Module layout follows the specification:
+//! Module layout:
 //!
 //! - [`protocol`]: wire DTOs shared with the Obsidian plugin.
 //! - [`config`]: the configuration contract.

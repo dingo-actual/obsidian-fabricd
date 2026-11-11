@@ -1,0 +1,14 @@
+version = 1
+
+[privacy]
+allowed_hosted_providers = []
+
+[reranker]
+provider = "none"
+fallback = ["fireworks"]
+
+[reranker.fireworks]
+base_url = "https://api.fireworks.ai/inference/v1"
+endpoint = "/rerank"
+api_key_env = "FIREWORKS_API_KEY"
+model = "accounts/fireworks/models/qwen3-reranker-8b"

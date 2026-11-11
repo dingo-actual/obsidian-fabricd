@@ -1,5 +1,5 @@
-//! Integration smoke test: the crate builds as a library and the wire protocol
-//! version it advertises is the version the specification fixes at `1`.
+//! Integration smoke test: the crate builds as a library and advertises wire
+//! protocol version `1`.
 
 #[test]
 fn protocol_version_is_one() {

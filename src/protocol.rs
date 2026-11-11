@@ -5,8 +5,8 @@
 //! decoded through the strict decoder in `protocol::strict`, which rejects invalid
 //! UTF-8, duplicate object keys, non-finite numbers, and excessive nesting.
 //!
-//! The specification names a single `protocol.rs`; this becomes a `protocol/`
-//! directory once the DTO set outgrows the module size limits.
+//! This starts as one module and becomes a `protocol/` directory once the DTO
+//! set outgrows the module size limits.
 
 /// The only wire protocol version this build speaks.
 pub const PROTOCOL_VERSION: u32 = 1;

@@ -1,0 +1,86 @@
+version = 1
+
+[server]
+bind = "127.0.0.1"
+port = 47322
+token_env = "OBSIDIAN_FABRICD_TOKEN"
+max_sessions = 16
+session_idle_seconds = 900
+request_limit_bytes = 131072
+event_limit_bytes = 262144
+
+[fabric]
+base_url = "https://api.fabric.so"
+search_path = "/v2/search"
+api_key_env = "FABRIC_API_KEY"
+account_namespace = "personal-fabric"
+credential_epoch = "initial-setup"
+base_id = ""
+query_count = 2
+multi_query = false
+candidate_count = 25
+max_response_bytes = 4194304
+
+[privacy]
+redact_secrets = true
+allowed_hosted_providers = []
+property_allowlist = []
+include_document_title_remote = false
+include_headings_remote = true
+
+[context]
+max_semantic_chars = 12000
+max_query_chars = 1000
+max_candidate_chars = 8000
+
+[contextualizer]
+enabled = false
+provider = "disabled"
+fallback = []
+max_output_tokens = 4096
+prompt_version = "context-prefix-1"
+persist_prefixes = false
+
+[reranker]
+provider = "none"
+fallback = []
+request_full_pool = true
+
+[results]
+display_count = 5
+relevance_policy = "rank_only"
+dismissal_ttl_hours = 24
+recent_tie_break = false
+
+[timeouts]
+connect_ms = 3000
+fabric_ms = 10000
+contextualizer_ms = 10000
+local_reranker_ms = 30000
+hosted_reranker_ms = 15000
+overall_pipeline_ms = 45000
+
+[concurrency]
+pipelines = 2
+fabric = 3
+contextualizer = 2
+local_reranker = 1
+hosted_reranker = 4
+
+[budgets]
+hosted_requests_per_minute = 30
+hosted_burst = 5
+
+[cache]
+enabled = true
+path = "auto"
+final_ttl_hours = 6
+prefix_ttl_hours = 168
+degraded_ttl_seconds = 300
+max_bytes = 104857600
+max_entries = 5000
+feedback_retention_days = 30
+
+[logging]
+level = "info"
+log_payloads = false

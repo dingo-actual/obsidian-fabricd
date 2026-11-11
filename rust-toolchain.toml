@@ -1,6 +1,6 @@
 [toolchain]
-# Pinned exactly (Phase 0 decision D6) so the Windows release build is
-# reproducible; bump deliberately, together with Cargo.lock.
+# Pinned exactly so the Windows release build is reproducible.
+# Bump deliberately, together with Cargo.lock.
 channel = "1.99.1"
 profile = "minimal"
 components = [

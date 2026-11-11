@@ -1,0 +1,4 @@
+version = 1
+
+[privacy]
+custom_redaction_patterns = ["(unclosed"]

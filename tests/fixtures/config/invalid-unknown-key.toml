@@ -1,0 +1,5 @@
+version = 1
+
+[privacy]
+redact_secrets = true
+redact_everything = true
