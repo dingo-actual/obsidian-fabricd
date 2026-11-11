@@ -1,5 +1,7 @@
 [toolchain]
-channel = "stable"
+# Pinned exactly (Phase 0 decision D6) so the Windows release build is
+# reproducible; bump deliberately, together with Cargo.lock.
+channel = "1.99.1"
 profile = "minimal"
 components = [
     "rustfmt",
@@ -7,4 +9,3 @@ components = [
     "rust-src",
     "rust-analyzer",
 ]
-

@@ -1,0 +1,7 @@
+# Nextest configuration.
+#
+# `just test` runs the default profile. CI runs `--profile ci`, which keeps going
+# so one failing test does not hide the rest.
+
+[profile.ci]
+fail-fast = false

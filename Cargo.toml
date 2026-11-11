@@ -2,5 +2,56 @@
 name = "obsidian-fabricd"
 version = "0.1.0"
 edition = "2024"
+license = "Apache-2.0"
+authors = ["Ryan P. Taylor <ryan@beta-reduce.net>"]
 
 [dependencies]
+# Every dependency here is named by the specification (§3, §22).
+anyhow = "1.0.104"
+axum = "0.8.9"
+clap = { version = "4.6.7", features = ["derive"] }
+hex = "0.4.3"
+hmac = "0.13.0"
+regex = "1.13.1"
+# rustls without its default aws-lc-rs provider: aws-lc-sys needs CMake, which the
+# Windows targets do not carry. The ring provider is installed once at startup.
+reqwest = { version = "0.13.5", default-features = false, features = [
+    "brotli",
+    "charset",
+    "gzip",
+    "http2",
+    "json",
+    "rustls-no-provider",
+] }
+# bundled: no native SQLite dependency to install on Windows (§18.1).
+rusqlite = { version = "0.42.0", features = ["bundled"] }
+rustls = { version = "0.23.46", default-features = false, features = [
+    "logging",
+    "ring",
+    "std",
+    "tls12",
+] }
+secrecy = "0.10.3"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+sha2 = "0.11.1"
+subtle = "2.6.1"
+thiserror = "2.0.21"
+tokio = { version = "1.54.1", features = [
+    "macros",
+    "rt-multi-thread",
+    "signal",
+    "sync",
+    "time",
+] }
+tokio-util = { version = "0.7.20", features = ["rt"] }
+toml = "1.2.1"
+tower = "0.5.3"
+tower-http = { version = "0.7.1", features = ["limit", "set-header", "trace"] }
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["json"] }
+uuid = { version = "1.29.2", features = ["serde", "v4"] }
+
+[dev-dependencies]
+proptest = "1.12.0"
+wiremock = "0.6.5"
